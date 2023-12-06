@@ -1,5 +1,6 @@
 const { readLines } = require("../common");
 const { stringify } = JSON;
+const {max} = Math;
 
 async function processFile(path) {
   const lines = await readLines(path);
@@ -107,5 +108,30 @@ async function day2() {
   console.log(`\n\nsuccess count: ${successCount}, gamesum:${gameSum}`);
 }
 
+function powerLevel(game){
+  var startstats = {red: 0, green: 0, blue: 0};
+  var endstats = game.reduce((stats, subset) => {
+    for([count, color] of subset) {
+      // console.log(count, color);
+      stats[color] = max(stats[color], count);
+    }
+    return stats
+  }, startstats);
+  return endstats.red * endstats.green * endstats.blue;
+}
 
-day2();
+async function day2b() {
+  var pairs = await processFile("./day02/data/day02.txt");  
+  var powersums = 0
+  for([gameid, game] of pairs) {
+    // console.log('game:', game);
+    console.log(`game:${gameid}, powerlevel:${powerLevel(game)}`);
+    powersums += powerLevel(game);
+  }
+  console.log(`powersum: ${powersums}`);
+}
+
+
+// day2sample();
+// day2();
+day2b();
