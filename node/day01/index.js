@@ -29,8 +29,9 @@ function wordsToNums(str) {
   ];
 
   numwords.forEach((val, i) => {
-    str.replace(val, `${i}`);
+   str =  str.replaceAll(val, `${i}`);
   });
+  return str;
 }
 
 // Part 1 Solution
@@ -51,4 +52,21 @@ function wordsToNums(str) {
   console.log(`Grand total was: ${grandTotal}`);
 })();
 
-console.log("hello");
+
+
+//part 2 solution
+(async function () {
+  const worddata = await readLines("./day01/data/input0b.txt");
+  const numdata = worddata.map((str) => wordsToNums(str));
+
+  var grandTotal = 0;
+  for (line of worddata) {
+    var numline = wordsToNums(line);
+    var num1 = firstNum(line);
+    var num2 = firstNum(reverseString(line));
+    var tot = num1 * 10 + num2;
+    console.log(`line:${line}\t translated:${numline}\t tot:${tot}`);
+    grandTotal += tot;
+  }
+  console.log(`***Grand total was: ${grandTotal}`);
+})();
